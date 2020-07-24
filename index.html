@@ -61,10 +61,25 @@
     const sliderImages = document.querySelectorAll('.slide-in');
 
     function checkSlide (e){
-        console.log(e);
-    }
+    
+        console.log(window.scrollY + window.innerHeight); //gives us pixel level from the bottom
+        sliderImages.forEach(sliderImage => {
+            const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
+         // this gives us halfway through the image
+            const imageBottom = sliderImage.offsetTop + sliderImage.height;
+          // this gives us the bottom of the image
+            const isHalfShown = slideInAt > sliderImage.offsetTop;
+            const isNotScrolledPast = window.scrollY < imageBottom;
 
-    window.addEventListener('scroll', checkSlide);
+            if (isHalfShown && isNotScrolledPast) {
+                sliderImage.classList.add('active')
+            }
+            else {
+                sliderImage.classList.remove('active')
+            }
+        })
+    }
+    window.addEventListener('scroll', debounce(checkSlide));
 
 
   </script>
